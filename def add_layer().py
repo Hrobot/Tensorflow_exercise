@@ -8,7 +8,7 @@ def add_layer(inputs, in_size, activation_function=None):
     outputs =Wx_plus_b
   else:
     outputs = activation_function(Wx_plus_b)
-  reture outputs
+  return outputs
   
   x_data = np.linspace(-1, 1, 300)[:, np.newaxis]
   noise = np.random.normal(0, 0.05, x_data.shape)
@@ -16,10 +16,11 @@ def add_layer(inputs, in_size, activation_function=None):
   
   xs = tf.placeholder(tf.float32. [None, 1])
   ys = tf.placeholder(tf.float32. [None, 1])
-  layer1 = add_layer(x_data, 1, 10, activation_function = tf.nn.relu)
+  
+  layer1 = add_layer(x_data, 1, 10, activation_function = tf.nn.relu) #运行到这一步会报错（TypeError: add_layer() got multiple values for argument 'activation_function'），应该是tensorflow add_layer的规格变了
   prediction add_layer(layer1, 10, 1, activation_function = None)
   
-  lass = tf.reduce_mean(tf.square(ys - prediction), reducition_indices=[1]))
+  loss = tf.reduce_mean(tf.square(ys - prediction), reducition_indices=[1]))
   train_step = tf.train.GradientDescentOptimizer(0.1).minimize(loss) #又一个学习效率值，一般取为小于1
   
   init = tf.initialize_all_variables()
