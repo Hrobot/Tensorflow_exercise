@@ -1,0 +1,54 @@
+import tensorflow as tf
+import numpy as np
+
+# create data
+x_data = np.random.rand(100).astype(np.float32)
+y_data = x_data*0.1 + 0.3
+Weights = tf.Variable(tf.random_uniform([1], -1.0, 1.0))
+biases = tf.Variable(tf.zeros([1]))
+
+y = Weights*x_data + biases
+loss = tf.reduce_mean(tf.square(y-y_data))
+optimizer = tf.train.GradientDescentOptimizer(0.5)
+train = optimizer.minimize(loss)
+# init = tf.initialize_all_variables() # tf 马上就要废弃这种写法
+init = tf.global_variables_initializer()  # 替换成这样就好
+sess = tf.Session()
+sess.run(init)          # Very important
+
+for step in range(201):
+    sess.run(train)
+    if step % 20 == 0:
+        print(step, sess.run(Weights), sess.run(biases))
+
+
+ # code from https://morvanzhou.github.io/tutorials/machine-learning/tensorflow/2-2-example2/
+ optimizer = tf.train.GradientDescentOptimizer(0.5)
+这里取值为0.5，运行结果如下：
+ 0 [ 0.43183473] [ 0.17083481]
+20 [ 0.16279882] [ 0.26855823]
+40 [ 0.11243942] [ 0.29377192]
+60 [ 0.10246405] [ 0.29876631]
+80 [ 0.10048809] [ 0.29975563]
+100 [ 0.10009669] [ 0.29995161]
+120 [ 0.10001916] [ 0.29999042]
+140 [ 0.1000038] [ 0.2999981]
+160 [ 0.10000075] [ 0.29999962]
+180 [ 0.10000015] [ 0.29999995]
+200 [ 0.10000006] [ 0.29999998]
+这里取值为0.9，运行结果如下：
+0 [ 0.38188562] [ 0.47906306]
+20 [ 6.52563] [ 13.11512566]
+40 [ 321.4559021] [ 642.14465332]
+60 [ 16090.43847656] [ 32137.60546875]
+80 [ 805646.25] [ 1609121.5]
+100 [ 40338892.] [ 80569080.]
+120 [  2.01977549e+09] [  4.03410739e+09]
+140 [  1.01130568e+11] [  2.01988637e+11]
+160 [  5.06363013e+12] [  1.01136141e+13]
+180 [  2.53537087e+14] [  5.06390804e+14]
+200 [  1.26946477e+16] [  2.53550839e+16]
+结果相差很大。
+这里的0.5是learning rate学习效率，一般是一个小于1的数
+传统上来说效率是越高越好，但这里的取值却不是
+
