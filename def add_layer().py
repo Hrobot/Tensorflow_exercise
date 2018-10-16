@@ -32,3 +32,4 @@ def add_layer(inputs, in_size, activation_function=None):
     if i% 50 ==0:
       print(sess.run(loss, feed_dict={xs:x_data, ys:y_data}))
   
+#  optimizer 在tensorflow中共有七种，用于更新优化学习效率（学习率），
